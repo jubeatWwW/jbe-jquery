@@ -1,0 +1,22 @@
+
+div.jbe-editor{
+    position: relative;
+}
+
+div.jbe-line {
+    position: relative;
+    height: 30px;
+    width: 100%;
+    font-family: Arial, "標楷體";
+    font-size: 16pt;
+    font-style: normal;
+    white-space: pre;
+    vertical-align: bottom;
+}
+
+div.caret{
+    position: absolute;
+    width: 5px;
+    z-index: 1;
+    border-left: 1px solid black;
+}
