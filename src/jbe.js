@@ -72,11 +72,53 @@ class JBE{
     bind(){
         $(this.DOM).on('mouseup', this.mouseupHandler.bind(this));
     }
-
+    
     mouseupHandler(e){
         let sel = window.getSelection();
+        console.log(sel);
+        if(sel.isCollapsed){
+            let pos = this.GetFocusedPos(sel.focusNode);
 
-        let node = sel.focusNode;
+            this.caret.show();
+            this.global.Actions.dispatch({
+                type: 'MVCARET_POS',
+                x: sel.focusOffset,
+                y: pos.y,
+                block: pos.block,
+            });
+
+        } else {
+            let range = sel.getRangeAt(0);
+            console.log('range', range);
+            console.log(sel.anchorOffset, sel.focusOffset);
+            console.log('range selected');
+            
+            let spos = this.GetFocusedPos(sel.anchorNode);
+            let epos = this.GetFocusedPos(sel.focusNode);
+            
+            this.global.Actions.dispatch({
+                type: 'SET_RANGE',
+                sx: sel.anchorOffset,
+                sy: spos.y,
+                sb: spos.block,
+                ex: sel.focusOffset,
+                ey: epos.y,
+                eb: epos.block,
+            });
+
+            this.global.Actions.dispatch({
+                type: 'MVCARET_POS',
+                x: sel.focusOffset,
+                y: epos.y,
+                block: epos.block,
+            });
+            this.caret.hide();
+
+        }
+
+    }
+    
+    GetFocusedPos(node){
         while('SPAN' != node.nodeName){
             node = node.parentNode;
         }
@@ -93,13 +135,10 @@ class JBE{
             lineCnt++;
         }
 
-        this.global.Actions.dispatch({
-            type: 'MVCARET_POS',
-            x: sel.focusOffset,
+        return {
             y: lineCnt-1,
             block: spanCnt-1
-        });
-
+        }
     }
 
     AddLine(anchor, line){
@@ -110,6 +149,13 @@ class JBE{
                 line.id,
                 line.nodes)
         );
+    }
+
+    DeleteLine(s, e){
+        for(let i=s; i<=e; i++){
+            $(this.lines[i].DOM).remove();
+        }
+        this.lines.splice(s, e-s+1);
     }
 }
 

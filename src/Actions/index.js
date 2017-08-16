@@ -1,12 +1,13 @@
 import Text from './Text';
 import Caret from './Caret';
+import Range from './Range';
 
 export default class Actions{
 
     constructor(global){
         this.global = global;
         this.global.Actions = this;
-        this.actions = Object.assign({}, Text, Caret);
+        this.actions = Object.assign({}, Text, Caret, Range);
         this.tasks = [];
     }
 

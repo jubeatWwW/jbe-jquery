@@ -47,14 +47,32 @@ export default class Caret{
 
         $(this.DOM).focus();
     }
+    
+    show(){
+        $(this.DOM).css({borderLeft: '1px solid black'});
+    }
+
+    hide(){
+        $(this.DOM).css({borderLeft: 'none'});
+    }
 
     keydownHandler(e){
         console.log('keydown', e.key);
-        if(e.key.length == 1)
-            this.global.Actions.dispatch({
-                type: 'ADDCAHR',
-                c: e.key
-            });
+        let { state } = this.global.Store;
+        this.show();
+        if(e.key.length == 1){
+            if(state.range.isCollapsed)
+                this.global.Actions.dispatch({
+                    type: 'ADDCAHR',
+                    c: e.key
+                });
+            else {
+                this.global.Actions.dispatch({
+                    type: 'RANGE_ADDCHAR',
+                    c: e.key
+                });
+            }
+        }
         else {
             if('Enter' == e.key){
                 this.global.Actions.dispatch({
@@ -104,6 +122,8 @@ export default class Caret{
                 this.global.Actions.dispatch({
                     type: 'MVCARET_RIGHT',
                 });
+            } else if('Backspace' == e.key){
+                
             }
  
         }

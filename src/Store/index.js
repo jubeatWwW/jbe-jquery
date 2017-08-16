@@ -10,7 +10,6 @@ export default class Store{
         let caret = this.global.Caret;
         let {x, y, block} = this.state.caret;
         
-        console.log(lines);
         lines[y].spans[block].setText(this.state.lines[y].nodes[block].text);
         caret.setCaret(x, y, block);
     }
@@ -26,7 +25,6 @@ export default class Store{
     addLine(anchor){
         let caret = this.global.Caret;
         let {x, y, block} = this.state.caret;
-        console.log(x,y,block);
         this.global.Editor.AddLine(y-1, this.state.lines[y]);
         caret.setCaret(x, y, block);
     }
@@ -36,5 +34,15 @@ export default class Store{
         let {x, y, block} = this.state.caret;
 
         caret.setCaret(x, y, block);
+    }
+
+    setRange(){
+
+    }
+
+    rangeBackspace(s, e){
+        let lines = this.global.Editor.lines;
+        lines[s].setText(this.state.lines[s].nodes);
+        this.global.Editor.DeleteLine(s+1, e);
     }
 }

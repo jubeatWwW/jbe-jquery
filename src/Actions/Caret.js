@@ -151,12 +151,16 @@ export default {
         }
         store.setCaret();
     },
-    MVCARET_POS: function(action){
+    MVCARET_POS: async function(action){
         let caret = this.global.Store.state.caret;
         caret.x = action.x;
         caret.y = action.y;
         caret.block = action.block;
         this.global.Store.setCaret();
+    },
+    BACKSPACE: async function(action){
+        let caret = this.global.Store.state.caret;
+        
     }
     
 };
