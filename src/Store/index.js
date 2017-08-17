@@ -32,7 +32,7 @@ export default class Store{
     setCaret(){
         let caret = this.global.Caret;
         let {x, y, block} = this.state.caret;
-
+        
         caret.setCaret(x, y, block);
     }
 

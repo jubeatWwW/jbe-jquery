@@ -34,6 +34,35 @@ export default {
         caret.y = y+1;
         caret.block = 0;    
         store.addLine();
+    },
+    BACKSPACE: async function(action){
+        let store = this.global.Store;
+        let { caret, lines } = store.state;
+        let {x, y, block} = caret;
+        
+        let node = lines[y].nodes[block];
+        let nodeCnt = lines[y].nodes.length;
+
+        if(1 == nodeCnt  && 0 == node.text.length){
+        } else if(1 == node.text.length){
+            if(1 == nodeCnt){
+                node.text = node.text.slice(0, x-1) + node.text.slice(x);
+                store.setText();
+            } else {
+                lines[y].nodes.splice(block, 1);
+                store.setLine();
+            }
+            caret.x--;
+        } else {
+            node.text = node.text.slice(0, x-1) + node.text.slice(x);
+            store.setText();
+            caret.x--;
+        }
+
+        store.setCaret();
+
+        console.log(lines);
     }
+
 
 };

@@ -96,6 +96,7 @@ class JBE{
             let spos = this.GetFocusedPos(sel.anchorNode);
             let epos = this.GetFocusedPos(sel.focusNode);
             
+
             this.global.Actions.dispatch({
                 type: 'SET_RANGE',
                 sx: sel.anchorOffset,
@@ -106,12 +107,6 @@ class JBE{
                 eb: epos.block,
             });
 
-            this.global.Actions.dispatch({
-                type: 'MVCARET_POS',
-                x: sel.focusOffset,
-                y: epos.y,
-                block: epos.block,
-            });
             this.caret.hide();
 
         }

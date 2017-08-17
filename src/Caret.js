@@ -54,6 +54,7 @@ export default class Caret{
 
     hide(){
         $(this.DOM).css({borderLeft: 'none'});
+        $(this.DOM).focus();
     }
 
     keydownHandler(e){
@@ -61,6 +62,7 @@ export default class Caret{
         let { state } = this.global.Store;
         this.show();
         if(e.key.length == 1){
+            console.log('isCollapsed', state.range.isCollapsed);
             if(state.range.isCollapsed)
                 this.global.Actions.dispatch({
                     type: 'ADDCAHR',
@@ -123,7 +125,15 @@ export default class Caret{
                     type: 'MVCARET_RIGHT',
                 });
             } else if('Backspace' == e.key){
-                
+                if(state.range.isCollapsed)
+                    this.global.Actions.dispatch({
+                        type: 'BACKSPACE',
+                    });
+                else
+                    this.global.Actions.dispatch({
+                        type: 'RANGE_BACKSPACE',
+                    });
+
             }
  
         }

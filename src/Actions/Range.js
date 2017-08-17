@@ -1,18 +1,27 @@
 export default {
     SET_RANGE: async function(action){
-        let { state } = this.global.Store;
+        let store = this.global.Store;
+        let { range, caret } = store.state;
         
         delete action.type;
         console.log(action);
-        state.range = Object.assign({}, action);
+        store.state.range = Object.assign({}, action);
         
+        caret.x = store.state.range.sx;
+        caret.y = store.state.range.sy;
+        caret.block = store.state.range.sb;
+        store.setCaret();
+        
+        store.state.range.isCollapsed = false;
     },
     RANGE_ADDCHAR: async function(action){
         this.dispatch({type: 'RANGE_BACKSPACE'});
+        this.dispatch({type: 'ADDCAHR', c: action.c});
+        this.global.Store.state.range.isCollapsed = true;
     },
     RANGE_BACKSPACE: async function(action){
         let store = this.global.Store;
-        let { range, lines } = store.state;
+        let { range, lines, caret } = store.state;
         let sNode = lines[range.sy].nodes[range.sb];
         let eNode = lines[range.ey].nodes[range.eb]; 
 
@@ -31,12 +40,15 @@ export default {
             lines[range.ey].nodes.splice(range.eb+1);
             lines.splice(range.sy+1, range.ey-range.sy);
             
-            range.isCollapsed = true;
             
             console.log(lines);
-
+            
             store.rangeBackspace(range.sy, range.ey);
-            store.setCaret(range.sx, range.sy, range.block);
+            
+            caret.x = range.sx;
+            caret.y = range.sy;
+            caret.block = range.sb;
+            store.setCaret();
         }
         
     }
