@@ -19,6 +19,7 @@ export default class Store{
         let caret = this.global.Caret;
         let {x, y, block} = this.state.caret;
         
+        console.log('set line y ', y);
         lines[y].setText(this.state.lines[y].nodes);
     }
 
@@ -38,6 +39,10 @@ export default class Store{
 
     setRange(){
 
+    }
+
+    deleteLine(n){
+        this.global.Editor.DeleteLine(n, n);
     }
 
     rangeBackspace(s, e){

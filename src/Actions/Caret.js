@@ -124,7 +124,7 @@ export default {
                 caret.x = lines[caret.y].nodes[caret.block].text.length;
             } else {
                 caret.block--;
-                caret.x = lines[y].nodes[caret.block].text.length;
+                caret.x = lines[y].nodes[caret.block].text.length - 1;
             }
         }
         store.state.range.isCollapsed = true;
@@ -148,7 +148,7 @@ export default {
                 caret.x = 0;
             } else {
                 caret.block++;
-                caret.x = 0;
+                caret.x = 1;
             }
         }
         store.state.range.isCollapsed = true;
