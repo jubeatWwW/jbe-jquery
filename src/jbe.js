@@ -97,12 +97,19 @@ class JBE{
             let epos = this.GetFocusedPos(sel.focusNode);
             let [sx, ex] = [sel.anchorOffset, sel.focusOffset];
 
-            if(spos.y > epos.y || 
+            /*if(spos.y > epos.y || 
                 (spos.y == epos.y && spos.block > epos.block) ||
-                (spos.y == epos.y && spos.block == epos.block && sel.anchorOffset > sel.focusOffset) ){
+                (spos.y == epos.y && spos.block == epos.block && sx > ex) ){
                     
-                    [spos, epos] = [epos, spos];
-                    [sx, ex] = [ex, sx];
+            }*/
+
+            if(spos.y != epos.y ? (spos.y > epos.y) :
+              (spos.block != epos.block) ? spos.block > epos.block : sx > ex){
+                
+                console.log('reverse');  
+                [spos, epos] = [epos, spos];
+                [sx, ex] = [ex, sx];
+              
             }
 
             this.global.Actions.dispatch({
