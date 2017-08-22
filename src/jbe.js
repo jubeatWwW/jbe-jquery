@@ -95,14 +95,22 @@ class JBE{
             
             let spos = this.GetFocusedPos(sel.anchorNode);
             let epos = this.GetFocusedPos(sel.focusNode);
-            
+            let [sx, ex] = [sel.anchorOffset, sel.focusOffset];
+
+            if(spos.y > epos.y || 
+                (spos.y == epos.y && spos.block > epos.block) ||
+                (spos.y == epos.y && spos.block == epos.block && sel.anchorOffset > sel.focusOffset) ){
+                    
+                    [spos, epos] = [epos, spos];
+                    [sx, ex] = [ex, sx];
+            }
 
             this.global.Actions.dispatch({
                 type: 'SET_RANGE',
-                sx: sel.anchorOffset,
+                sx,
                 sy: spos.y,
                 sb: spos.block,
-                ex: sel.focusOffset,
+                ex,
                 ey: epos.y,
                 eb: epos.block,
             });

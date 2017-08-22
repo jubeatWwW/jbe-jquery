@@ -27,7 +27,6 @@ export default {
 
         if(range.sy == range.ey && range.sb == range.eb){
             sNode.text = sNode.text.slice(0, range.sx) + sNode.text.slice(range.ex);
-            range.isCollapsed = true;
             store.setText();
         } else {
             sNode.text = sNode.text.slice(0, range.sx);
@@ -50,6 +49,7 @@ export default {
             caret.block = range.sb;
             store.setCaret();
         }
+        range.isCollapsed = true;
         
     }
 };
