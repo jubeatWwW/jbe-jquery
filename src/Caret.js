@@ -62,7 +62,6 @@ export default class Caret{
         let { state } = this.global.Store;
         this.show();
         if(e.key.length == 1){
-            console.log('isCollapsed', state.range.isCollapsed);
             if(state.range.isCollapsed)
                 this.global.Actions.dispatch({
                     type: 'ADDCAHR',

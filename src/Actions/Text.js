@@ -5,8 +5,6 @@ export default {
         let node = lines[caret.y].nodes[caret.block];
         let x = caret.x;
 
-        console.log('addchar', action.c);
-        
         node.text = node.text.slice(0, x) + action.c + node.text.slice(x);
         caret.x++;
 
@@ -26,8 +24,6 @@ export default {
         let newLine = {id: ++store.state.currentId, nodes: nblocks};
         lines.splice(y+1, 0, newLine);
         
-        console.log(lines);   
-
         store.setLine();
         
         caret.x = 0;
@@ -67,7 +63,6 @@ export default {
                     preLine.nodes = preLine.nodes.concat(curLine.nodes);
                 }
 
-                console.log(lines);
                 store.setLine();
                 
                 lines.splice(y, 1);
@@ -100,7 +95,6 @@ export default {
 
         store.setCaret();
 
-        console.log(lines);
     }
 
 

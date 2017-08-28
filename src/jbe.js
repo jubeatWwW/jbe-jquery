@@ -89,24 +89,15 @@ class JBE{
 
         } else {
             let range = sel.getRangeAt(0);
-            console.log('range', range);
-            console.log(sel.anchorOffset, sel.focusOffset);
-            console.log('range selected');
             
             let spos = this.GetFocusedPos(sel.anchorNode);
             let epos = this.GetFocusedPos(sel.focusNode);
             let [sx, ex] = [sel.anchorOffset, sel.focusOffset];
-
-            /*if(spos.y > epos.y || 
-                (spos.y == epos.y && spos.block > epos.block) ||
-                (spos.y == epos.y && spos.block == epos.block && sx > ex) ){
-                    
-            }*/
-
+            
+            //ensure start position is behind end position
             if(spos.y != epos.y ? (spos.y > epos.y) :
               (spos.block != epos.block) ? spos.block > epos.block : sx > ex){
                 
-                console.log('reverse');  
                 [spos, epos] = [epos, spos];
                 [sx, ex] = [ex, sx];
               
@@ -129,9 +120,19 @@ class JBE{
     }
     
     GetFocusedPos(node){
-        while('SPAN' != node.nodeName){
-            node = node.parentNode;
+        if($(node).hasClass('jbe-line')){
+            node = node.lastElementChild;
+        } else if($(node).hasClass('caret')){
+            return {
+                y: this.global.Store.state.caret.y,
+                block: this.global.Store.state.caret.block,
+            }
+        } else {
+            while('SPAN' != node.nodeName){
+                node = node.parentNode;
+            }
         }
+        
         let lnode = node.parentNode;
 
         let spanCnt = 0, lineCnt = 0;
