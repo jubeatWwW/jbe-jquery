@@ -102,15 +102,22 @@ class JBE{
                 [sx, ex] = [ex, sx];
               
             }
+            
+            let sn = this.global.Editor.lines[sy].spans[sb].DOM;
+            let ss = window.getComputedStyle(sn, null);
+            let en = this.global.Editor.lines[ey].spans[eb].DOM;
+            let es = window.getComputedStyle(en, null);
 
             this.global.Actions.dispatch({
-                type: 'SET_RANGE',
+                type: 'RANGE_SELECT',
                 sx,
                 sy: spos.y,
                 sb: spos.block,
                 ex,
                 ey: epos.y,
                 eb: epos.block,
+                sfont: `${ss.fontSize} ${ss.fontFamily}`,
+                efont: `${es.fontSize} ${es.fontFamily}`
             });
 
             this.caret.hide();

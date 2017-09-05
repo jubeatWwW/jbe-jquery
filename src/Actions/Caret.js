@@ -50,7 +50,7 @@ export default {
                 caret.block = pblock;
             }
         }
-        store.state.range.isCollapsed = true;
+        this.dispatch({type: 'RANGE_UNSET'});
         store.setCaret();
     },
     MVCARET_DOWN: async function(action){
@@ -104,6 +104,7 @@ export default {
                 caret.block = nblock;
             }
         }
+        this.dispatch({type: 'RANGE_UNSET'});
         store.setCaret();
     },
     MVCARET_LEFT: async function(action){
@@ -127,7 +128,9 @@ export default {
                 caret.x = lines[y].nodes[caret.block].text.length - 1;
             }
         }
-        store.state.range.isCollapsed = true;
+        
+
+        this.dispatch({type: 'RANGE_UNSET'});
         store.setCaret();
     },
     MVCARET_RIGHT: async function(action){
@@ -151,7 +154,7 @@ export default {
                 caret.x = 1;
             }
         }
-        store.state.range.isCollapsed = true;
+        this.dispatch({type: 'RANGE_UNSET'});
         store.setCaret();
     },
     MVCARET_POS: async function(action){
@@ -159,7 +162,7 @@ export default {
         caret.x = action.x;
         caret.y = action.y;
         caret.block = action.block;
-        this.global.Store.state.range.isCollapsed = true;
+        this.dispatch({type: 'RANGE_UNSET'});
         this.global.Store.setCaret();
     }
     

@@ -1,10 +1,13 @@
 export default {
-    SET_RANGE: async function(action){
+    RANGE_SELECT: async function(action){
         let store = this.global.Store;
         let { range, caret } = store.state;
         
         delete action.type;
-        console.log(action);
+        let { sfont, efont } = action;
+        delete action.sfont;
+        delete action.efont;
+        
         store.state.range = Object.assign({}, action);
         
         caret.x = store.state.range.sx;
@@ -12,12 +15,12 @@ export default {
         caret.block = store.state.range.sb;
         store.setCaret();
         
-        store.state.range.isCollapsed = false;
+        this.dispatch({type: 'RANGE_SET', sfont, efont});
     },
     RANGE_ADDCHAR: async function(action){
         this.dispatch({type: 'RANGE_BACKSPACE'});
         this.dispatch({type: 'ADDCAHR', c: action.c});
-        this.global.Store.state.range.isCollapsed = true;
+        this.dispatch({type: 'RANGE_UNSET'});
     },
     RANGE_BACKSPACE: async function(action){
         let store = this.global.Store;
@@ -39,9 +42,6 @@ export default {
             lines[range.ey].nodes.splice(range.eb+1);
             lines.splice(range.sy+1, range.ey-range.sy);
             
-            
-            console.log(lines);
-            
             store.rangeBackspace(range.sy, range.ey);
             
             caret.x = range.sx;
@@ -49,7 +49,18 @@ export default {
             caret.block = range.sb;
             store.setCaret();
         }
-        range.isCollapsed = true;
         
-    }
+        this.dispatch({type: 'RANGE_UNSET'});
+        
+    },
+    RANGE_SET: async function(action){
+        let { vc } = this.global;
+        let { range, lines } = this.global.Store.state;
+        let { sfont, efont } = action;
+
+        this.global.Store.state.range.isCollapsed = false;
+    },
+    RANGE_UNSET: async function(action){
+        this.global.Store.state.range.isCollapsed = true;
+    },
 };
